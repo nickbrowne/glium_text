@@ -223,7 +223,7 @@ impl TextSystem {
     pub fn new<F>(facade: &F) -> TextSystem where F: Facade {
         TextSystem {
             context: facade.get_context().clone(),
-            program: program!(facade, 
+            program: program!(facade,
                 140 => {
                     vertex: "
                         #version 140
@@ -414,7 +414,7 @@ impl<F> TextDisplay<F> where F: Deref<Target=FontTexture> {
 /// The bottom of the line is at `0.0`, the top is at `1.0`.
 /// You need to adapt your matrix by taking these into consideration.
 pub fn draw<F, S: ?Sized, M>(text: &TextDisplay<F>, system: &TextSystem, target: &mut S,
-                             matrix: M, color: (f32, f32, f32, f32))
+                             matrix: M, color: (f32, f32, f32, f32), blend: glium::Blend)
                              where S: glium::Surface, M: Into<[[f32; 4]; 4]>,
                                    F: Deref<Target=FontTexture>
 {
@@ -443,20 +443,6 @@ pub fn draw<F, S: ?Sized, M>(text: &TextDisplay<F>, system: &TextSystem, target:
 
 
     let params = {
-        use glium::BlendingFunction::Addition;
-        use glium::LinearBlendingFactor::*;
-
-        let blending_function = Addition {
-            source: SourceAlpha,
-            destination: OneMinusSourceAlpha
-        };
-
-        let blend = glium::Blend {
-            color: blending_function,
-            alpha: blending_function,
-            constant_value: (1.0, 1.0, 1.0, 1.0),
-        };
-
         DrawParameters {
             blend: blend,
             .. Default::default()

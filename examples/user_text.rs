@@ -45,7 +45,22 @@ fn main() {
 
         let mut target = display.draw();
         target.clear_color(0.0, 0.0, 0.0, 1.0);
-        glium_text::draw(&text, &system, &mut target, matrix, (1.0, 1.0, 0.0, 1.0));
+
+        use glium::BlendingFunction::Addition;
+        use glium::LinearBlendingFactor::*;
+
+        let blending_function = Addition {
+            source: SourceAlpha,
+            destination: OneMinusSourceAlpha
+        };
+
+        let blend = glium::Blend {
+            color: blending_function,
+            alpha: blending_function,
+            constant_value: (1.0, 1.0, 1.0, 1.0),
+        };
+
+        glium_text::draw(&text, &system, &mut target, matrix, (1.0, 1.0, 0.0, 1.0), blend);
         target.finish().unwrap();
 
         thread::sleep(sleep_duration);
