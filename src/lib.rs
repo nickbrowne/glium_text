@@ -49,7 +49,7 @@ use std::rc::Rc;
 
 /// Texture which contains the characters of the font.
 pub struct FontTexture {
-    texture: glium::texture::Texture2d,
+    pub texture: glium::texture::Texture2d,
     character_infos: Vec<(char, CharacterInfos)>,
 }
 
@@ -64,11 +64,11 @@ pub struct TextSystem {
 /// Object that will allow you to draw a text.
 pub struct TextDisplay<F> where F: Deref<Target=FontTexture> {
     context: Rc<Context>,
-    texture: F,
-    vertex_buffer: Option<glium::VertexBuffer<VertexFormat>>,
-    index_buffer: Option<glium::IndexBuffer<u16>>,
+    pub texture: F,
+    pub vertex_buffer: Option<glium::VertexBuffer<VertexFormat>>,
+    pub index_buffer: Option<glium::IndexBuffer<u16>>,
     total_text_width: f32,
-    is_empty: bool,
+    pub is_empty: bool,
 }
 
 // structure containing informations about a character of a font
@@ -113,7 +113,7 @@ impl<'a> glium::texture::Texture2dDataSource<'a> for &'a TextureData {
 }
 
 #[derive(Copy, Clone)]
-struct VertexFormat {
+pub struct VertexFormat {
     position: [f32; 2],
     tex_coords: [f32; 2],
 }
